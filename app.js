@@ -3,7 +3,7 @@
    Funciona offline + sincroniza con Google Sheets
    ============================================================ */
 
-const API_URL = "https://script.google.com/macros/s/AKfycbwCSrBiRW4cUMW5xw7stxSj2DPO1SzBK5stZ1OnP4BND7G5YgSFhOP6fjfNM8RLDHfu/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbzUeAmMgJVBupqE5mH8cXX_f84GgeT8mNJcZw-xVutP4Dl_PkVzIRRYB7OPFI7YUVo/exec";
 
 /* ============================
    DETECTAR MODO OFFLINE
