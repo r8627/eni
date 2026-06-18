@@ -11,9 +11,9 @@ const API_URL = "https://script.google.com/macros/s/AKfycbwCSrBiRW4cUMW5xw7stxSj
 function actualizarEstadoOffline() {
   const badge = document.getElementById("estadoOffline");
   if (navigator.onLine) {
-    badge.classList.add("hidden");
+    badge?.classList.add("hidden");
   } else {
-    badge.classList.remove("hidden");
+    badge?.classList.remove("hidden");
   }
 }
 
@@ -166,7 +166,7 @@ function buscarOffline(valor) {
 }
 
 /* ============================
-   FILTRAR RESULTADOS
+   NORMALIZAR TEXTO
    ============================ */
 function clean(text) {
   return String(text || "")
@@ -177,6 +177,9 @@ function clean(text) {
     .trim();
 }
 
+/* ============================
+   FILTRAR RESULTADOS
+   ============================ */
 function filtrarYMostrar(registros, valor) {
   const cajaResultados = document.getElementById("resultados");
   const v = clean(valor);
