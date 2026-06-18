@@ -3,6 +3,8 @@
    Funciona offline + sincroniza con Google Sheets
    ============================================================ */
 
+const API_URL = "https://script.google.com/macros/s/AKfycbxI_ogKPqFGVasNDijJLf17yxmw0LDfyOfaHoWGQBbQrXCbv-KqIfAczALBobyWA9jI/exec";
+
 /* ============================
    DETECTAR MODO OFFLINE
    ============================ */
@@ -63,15 +65,11 @@ function guardar() {
     return;
   }
 
-  // Intento normal (online)
   if (navigator.onLine) {
-    fetch(
-      "https://script.google.com/macros/s/AKfycbz...TU_URL_AQUI.../exec",
-      {
-        method: "POST",
-        body: JSON.stringify(data)
-      }
-    )
+    fetch(API_URL, {
+      method: "POST",
+      body: JSON.stringify(data)
+    })
       .then(() => {
         alert("✔ Registro guardado en Google Sheets");
         limpiarFormulario();
@@ -104,13 +102,10 @@ setInterval(() => {
 
   const registro = pendientes[0];
 
-  fetch(
-    "https://script.google.com/macros/s/AKfycbz...TU_URL_AQUI.../exec",
-    {
-      method: "POST",
-      body: JSON.stringify(registro)
-    }
-  )
+  fetch(API_URL, {
+    method: "POST",
+    body: JSON.stringify(registro)
+  })
     .then(() => {
       pendientes.shift();
       localStorage.setItem("pendientes", JSON.stringify(pendientes));
@@ -145,7 +140,7 @@ function buscar() {
   }
 
   if (navigator.onLine) {
-    fetch("https://script.google.com/macros/s/AKfycbz...TU_URL_AQUI.../exec")
+    fetch(API_URL)
       .then(res => res.json())
       .then(data => {
         localStorage.setItem("bd_local", JSON.stringify(data));
@@ -232,4 +227,3 @@ function filtrarYMostrar(registros, valor) {
 
   cajaResultados.innerHTML = html;
 }
-
