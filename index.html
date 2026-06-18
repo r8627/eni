@@ -1,1 +1,211 @@
- 
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- MANIFEST PARA PWA -->
+  <link rel="manifest" href="manifest.json" />
+
+  <!-- ICONOS -->
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
+
+  <meta name="theme-color" content="#111" />
+
+  <title>ENI App</title>
+
+  <style>
+    body {
+      background: #111;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      padding: 10px;
+      margin: 0;
+    }
+    .container {
+      width: 100%;
+      max-width: 420px;
+      background: #1a1a1a;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+      box-sizing: border-box;
+    }
+    .nav-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .nav-tabs button {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 22px;
+      color: #00aaff;
+    }
+    label {
+      font-size: 12px;
+      color: #aaa;
+      margin-top: 8px;
+      display: block;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 11px;
+      margin: 4px 0 12px 0;
+      border-radius: 8px;
+      border: 1px solid #333;
+      background: #222;
+      color: #fff;
+      font-size: 15px;
+      box-sizing: border-box;
+    }
+    textarea {
+      resize: vertical;
+      height: 70px;
+    }
+    .btn-submit {
+      width: 100%;
+      padding: 14px;
+      background: #00aaff;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .btn-clear { background: #444; width: 100%; padding: 10px; border: none; border-radius: 8px; color: white; margin-top: 5px; cursor: pointer; }
+    .btn-alt { background: #008855; color: white; }
+    .btn-nav-inactive { background: #2a2a2a; color: #aaa; }
+    #resultados {
+      margin-top: 20px;
+      max-height: 480px;
+      overflow-y: auto;
+    }
+    .tarjeta {
+      background: #222;
+      border-left: 4px solid #00aaff;
+      padding: 14px;
+      margin-bottom: 12px;
+      border-radius: 0 8px 8px 0;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+    .tarjeta b {
+      color: #00aaff;
+    }
+    .status-badge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: bold;
+      background: #008855;
+      color: white;
+    }
+    .offline-badge {
+      font-size: 11px;
+      color: #ffaa00;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+    .hidden { display: none !important; }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <div id="estadoOffline" class="offline-badge hidden">
+    ⚠️ Modo sin conexión: se guardará en el dispositivo y se sincronizará después.
+  </div>
+
+  <!-- PESTAÑAS -->
+  <div class="nav-tabs">
+    <button id="btnTabRegistro" class="btn-alt" onclick="mostrarRegistro()">Registro</button>
+    <button id="btnTabBuscador" class="btn-nav-inactive" onclick="mostrarBuscador()">Buscador</button>
+  </div>
+
+  <!-- FORMULARIO DE REGISTRO -->
+  <div id="seccionRegistro">
+    <h2>📡 Registro Técnico ENI</h2>
+
+    <input id="folio" placeholder="Folio">
+    
+    <div style="display: flex; gap: 8px;">
+      <input id="mz" placeholder="Manzana">
+      <input id="edif" placeholder="Edificio">
+      <input id="dpto" placeholder="Dpto">
+    </div>
+
+    <input id="colonia" placeholder="Colonia">
+
+    <select id="antena">
+      <option value="">Seleccionar Antena</option>
+      <option value="F 190">F 190</option>
+      <option value="F 200L">F 200L</option>
+      <option value="F300 25L">F300 25L</option>
+      <option value="F180">F180</option>
+      <option value="OTRO">OTRO</option>
+    </select>
+
+    <input id="a_serie" placeholder="Serie Antena">
+    <input id="r_serie" placeholder="Serie Router">
+    <input id="red" placeholder="Nombre de Red">
+    <input id="contra" placeholder="Contraseña WiFi">
+    <input id="telefono" placeholder="Teléfono del Cliente">
+    <input id="nombre" placeholder="Nombre del Cliente">
+    
+    <textarea id="comentarios" placeholder="Comentarios"></textarea>
+    
+    <label>Fecha de instalación</label>
+    <input id="fecha" type="date">
+
+    <select id="status">
+      <option value="">Seleccionar Status</option>
+      <option value="INSTALADO">INSTALADO</option>
+      <option value="RECUPERADO">RECUPERADO</option>
+      <option value="CAMB DE DOM">CAMB DE DOM</option>
+      <option value="TICKET">TICKET</option>
+      <option value="PENDIENTE">PENDIENTE</option>
+    </select>
+
+    <button class="btn-submit" onclick="guardar()">Guardar Registro</button>
+    <button class="btn-clear" onclick="limpiarFormulario()">Limpiar Formulario</button>
+  </div>
+
+  <!-- SECCIÓN BUSCADOR -->
+  <div id="seccionBuscador" class="hidden">
+    <h2>🔍 Buscador de Equipos</h2>
+    <input id="buscarSerie" placeholder="Buscar folio, serie, red, tel o cualquier dato...">
+    <button class="btn-submit" onclick="buscar()">Buscar Ahora</button>
+    <div id="resultados"></div>
+  </div>
+
+</div>
+
+<script src="app.js"></script>
+
+<script>
+  // Registrar service worker para PWA
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("service-worker.js");
+  }
+</script>
+
+</body>
+</html>
+  
